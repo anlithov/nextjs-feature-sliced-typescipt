@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 import { Field, FieldAttributes, FieldProps } from 'formik';
-import AppField from '@/shared/ui/Fields/AppField';
-import { FieldBaseTypes } from '@/shared/ui/Fields/AppField.types';
+import { FieldBaseTypes } from '../../Fields/base/AppField.types';
+import AppField from '../../Fields/base/AppField';
 
 interface IProps {
   formikName: string;
@@ -9,7 +9,9 @@ interface IProps {
   onChange?: (value: string) => void;
   inputTextAlign?: 'center' | 'right' | 'left';
 }
-const AppFormikField: FC<IProps & FieldBaseTypes> = <T extends Record<string, string | number>>({
+const AppFormikField: FC<IProps & FieldBaseTypes> = <
+  T extends Record<string, string | number>,
+>({
   formikName,
   onBlur: onBlurAddon,
   onChange: onChangeAddon,
@@ -29,21 +31,31 @@ const AppFormikField: FC<IProps & FieldBaseTypes> = <T extends Record<string, st
           onChange(name)(event);
         };
 
-        const handleBlur = (event: FocusEvent) => {
+        const handleBlur = (
+          event: React.FocusEvent<HTMLInputElement, Element>,
+        ) => {
           setFieldTouched(name);
-          const eventTarget = event.target as HTMLTextAreaElement;
+          const eventTarget = event.target;
           onBlurAddon && eventTarget && onBlurAddon(eventTarget.value);
           onBlur(name);
         };
 
-        const errorData = (hasError && typeof errors[name] === 'string' ? errors[name] : undefined) as
-          | string
-          | undefined;
+        const errorData = (
+          hasError && typeof errors[name] === 'string'
+            ? errors[name]
+            : undefined
+        ) as string | undefined;
 
         const actualValue = typeof value === 'number' || 'string' ? value : '';
 
         return (
-          <AppField value={actualValue} onChange={handleChange} onBlur={handleBlur} error={errorData} {...otherProps} />
+          <AppField
+            value={actualValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errorData}
+            {...otherProps}
+          />
         );
       }}
     </Field>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppProps } from 'next/app';
 import RootLayout from '../app/root-layout';
 

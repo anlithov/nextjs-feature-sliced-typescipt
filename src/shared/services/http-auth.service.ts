@@ -1,4 +1,4 @@
-import { BodyRequest, IHttpConfig, IMap } from './http-base.types';
+import { IHttpConfig, IMap } from './http-base.types';
 import { HttpService } from './http.service';
 
 export class EnhancedWithAuthHttpService {
@@ -26,7 +26,8 @@ export class EnhancedWithAuthHttpService {
     const addonHeaders: Record<string, string> = {};
     if (this.addonAuthorizations) {
       for (const addon of this.addonAuthorizations) {
-        addonHeaders[addon.headerKey] = localStorage.getItem(addon.localStorageKey) ?? '';
+        addonHeaders[addon.headerKey] =
+          localStorage.getItem(addon.localStorageKey) ?? '';
       }
     }
     return {
@@ -39,27 +40,49 @@ export class EnhancedWithAuthHttpService {
     return this.httpService.get<R>(url, this.attachAuthHeader(config));
   }
 
-  public post<Response, Data extends BodyRequest>(
+  public post<Response, Data>(
     url: string,
     data: Data,
     config: IHttpConfig = {},
   ): Promise<Response> {
-    return this.httpService.post<Response, Data>(url, data, this.attachAuthHeader(config));
+    return this.httpService.post<Response, Data>(
+      url,
+      data,
+      this.attachAuthHeader(config),
+    );
   }
 
-  public put<Response, Data extends BodyRequest>(url: string, data: Data, config: IHttpConfig = {}): Promise<Response> {
-    return this.httpService.put<Response, Data>(url, data, this.attachAuthHeader(config));
-  }
-
-  public patch<Response, Data extends BodyRequest>(
+  public put<Response, Data>(
     url: string,
     data: Data,
     config: IHttpConfig = {},
   ): Promise<Response> {
-    return this.httpService.patch<Response, Data>(url, data, this.attachAuthHeader(config));
+    return this.httpService.put<Response, Data>(
+      url,
+      data,
+      this.attachAuthHeader(config),
+    );
   }
 
-  public delete<Response>(url: string, config: IHttpConfig = {}): Promise<Response> {
-    return this.httpService.delete<Response>(url, this.attachAuthHeader(config));
+  public patch<Response, Data>(
+    url: string,
+    data: Data,
+    config: IHttpConfig = {},
+  ): Promise<Response> {
+    return this.httpService.patch<Response, Data>(
+      url,
+      data,
+      this.attachAuthHeader(config),
+    );
+  }
+
+  public delete<Response>(
+    url: string,
+    config: IHttpConfig = {},
+  ): Promise<Response> {
+    return this.httpService.delete<Response>(
+      url,
+      this.attachAuthHeader(config),
+    );
   }
 }
